@@ -1,7 +1,7 @@
 name: dbt build & publish
 on:
   push:
-    branches: [main]
+    branches: [main]  # <- activate when push to main
   schedule:
     - cron: '17 6 * * 1'    # Mondays — the pipeline runs while you sleep
   workflow_dispatch:        # …and a manual Run button
@@ -16,9 +16,10 @@ jobs:
       - run: uv sync
       - run: uv run python scripts/download_data.py
       - run: uv run dbt build --profiles-dir ../ci
-        working-directory: analytics
+        working-directory: analytics  # change the working directory
+        # flag --colbber to overwrite the existing asset
       - run: |
           gh release create warehouse --notes "Warehouse — auto-built by dbt" || true
-          gh release upload warehouse data/prod.duckdb --clobber
+          gh release upload warehouse data/prod.duckdb --clobber  
         env:
           GH_TOKEN: ${{ github.token }}
