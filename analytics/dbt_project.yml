@@ -15,6 +15,7 @@ clean-targets:
 #  analytics:
 #    +schema: raw 
 
-# models:
-#  analytics: 
+models:
+ analytics:
+   +materialized: table
 

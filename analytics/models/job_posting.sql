@@ -1,5 +1,5 @@
--- specific to duckdb
-from dev.main.job_posting
+{{ config(materialized = "view") }}
+
 select
 	job_id,
 	job_title,
@@ -12,4 +12,5 @@ select
 	job_work_from_home,
 	search_date,
 	search_term
+from {{ source("raw", "job_posting") }}
 where error is null
